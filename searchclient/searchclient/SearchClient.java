@@ -10,11 +10,14 @@ import searchclient.Strategy.*;
 import searchclient.Heuristic.*;
 
 public class SearchClient {
+
 	public Node initialState;
 
 	public SearchClient(BufferedReader serverMessages) throws Exception {
-		// Read lines specifying colors
+		// Read lines specifying color
 		String line = serverMessages.readLine();
+		int maxCol = line.length();
+		
 		if (line.matches("^[a-z]+:\\s*[0-9A-Z](\\s*,\\s*[0-9A-Z])*\\s*$")) {
 			System.err.println("Error, client does not support colors.");
 			System.exit(1);
@@ -50,8 +53,15 @@ public class SearchClient {
 				}
 			}
 			line = serverMessages.readLine();
+			if(line.length() > maxCol){
+				maxCol = line.length();
+			}
 			row++;
 		}
+
+		Node.MAX_ROW = row + 1;
+		Node.MAX_COL = maxCol;
+
 	}
 
 	public LinkedList<Node> Search(Strategy strategy) throws IOException {
