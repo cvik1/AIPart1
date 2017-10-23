@@ -11,6 +11,9 @@ public abstract class Heuristic implements Comparator<Node> {
 
 	public int h(Node n) {
 		throw new NotImplementedException();
+		//write a recursive method 
+		//base case: compute straight line distance from start to box to goal
+		//write a recursion to go to next box back to goal 
 	}
 
 	public abstract int f(Node n);
