@@ -7,10 +7,26 @@ import searchclient.NotImplementedException;
 public abstract class Heuristic implements Comparator<Node> {
 	public Heuristic(Node initialState) {
 		// Here's a chance to pre-process the static parts of the level.
+		for (int i = 0; i < initialState.boxes.length; i++){
+			for (int j = 0; j < initialState.boxes[0].length; j++){
+				
+					
+
+
+
+
+			}
+		}
 	}
 
 	public int h(Node n) {
 		throw new NotImplementedException();
+		int dx = n.agentRow
+		int dy = n.agentCol - 
+
+
+
+
 		//write a recursive method 
 		//base case: compute straight line distance from start to box to goal
 		//write a recursion to go to next box back to goal 
