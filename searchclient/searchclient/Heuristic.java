@@ -1,30 +1,45 @@
 package searchclient;
 
 import java.util.Comparator;
+import java.util.*;
+import java.lang.Math.*; 
 
 import searchclient.NotImplementedException;
 
+
 public abstract class Heuristic implements Comparator<Node> {
+
+	ArrayList<int> goalX = new ArrayList<int>();
+	ArrayList<int> goalY = new ArrayList<int>();
+
+	ArrayList<int> boxX = new ArrayList<int>();
+	ArrayList<int> boxY = new ArrayList<int>();
+
+
 	public Heuristic(Node initialState) {
 		// Here's a chance to pre-process the static parts of the level.
 		for (int i = 0; i < initialState.boxes.length; i++){
 			for (int j = 0; j < initialState.boxes[0].length; j++){
-				
-					
-
-
-
-
+				if (initialState.goals[i][j] > 0){
+					goalX.add(i);
+					goalY.add(j);
+				}
+				if (initialState.boxes[i][j] > 0){
+					boxX.add(i);
+					boxY.add(j);
+				}
 			}
 		}
 	}
 
 	public int h(Node n) {
-		throw new NotImplementedException();
-		int dx = n.agentRow
-		int dy = n.agentCol - 
+		//throw new NotImplementedException();
+		int dx = abs(n.agentRow - goalX.at(0));
+		int dy = abs(n.agentCol - goalY.at(0));
 
+		return (dx + dy);
 
+		//return 0;
 
 
 		//write a recursive method 
