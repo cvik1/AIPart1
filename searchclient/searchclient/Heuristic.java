@@ -10,18 +10,18 @@ import searchclient.NotImplementedException;
 
 public abstract class Heuristic implements Comparator<Node> {
 
-	ArrayList<Integer> goalX;
-	ArrayList<Integer> goalY; 
-	ArrayList<Integer> boxX;
-	ArrayList<Integer> boxY;
+	ArrayList<Integer> goalsX;
+	ArrayList<Integer> goalsY; 
+	ArrayList<Integer> boxesX;
+	ArrayList<Integer> boxesY;
 
 
 	public Heuristic(Node initialState) {
 
-		goalX = new ArrayList<Integer>();
-		goalY = new ArrayList<Integer>();
-		boxX = new ArrayList<Integer>();
-		boxY = new ArrayList<Integer>();
+		goalsX = new ArrayList<Integer>();
+		goalsY = new ArrayList<Integer>();
+		boxesX = new ArrayList<Integer>();
+		boxesY = new ArrayList<Integer>();
 
 
 
@@ -30,34 +30,81 @@ public abstract class Heuristic implements Comparator<Node> {
 		for (int i = 0; i < initialState.boxes.length; i++){
 			for (int j = 0; j < initialState.boxes[0].length; j++){
 				if (initialState.goals[i][j] > 0){
-					goalX.add(i);
-					goalY.add(j);
+					goalsX.add(i);
+					goalsY.add(j);
 				}
 				if (initialState.boxes[i][j] > 0){
-					boxX.add(i);
-					boxY.add(j);
+					boxesX.add(i);
+					boxesY.add(j);
 				}
 			}
 		}
-		
-		System.out.println(goalX.size());
+
 
 	}
 
 
 	public int h(Node n) {
-		//throw new NotImplementedException();
-		int dx = abs(n.agentRow - goalX.get(0));
-		int dy = abs(n.agentCol - goalY.get(0));
+		
+		int total = 0;
+		int dex = 0;
+		int dist;
+		int min;
+
+		int[] current = new int[2];
+		current[0] = boxesX.remove(0);
+		current[1] = boxesY.remove(0);
+
+		boolean isBox = true;
+		boolean isGoal = false;
+
+		while(goalsX.size() > 0){
+			if(isBox == true){
+				min = Integer.MAX_VALUE;
+				for(int i = 0; i < goalsX.size(); i ++){
+					dist = manhattanDist(current[0], current[1], goalsX.get(i), goalsY.get(i));
+					if(dist < min){
+						min = dist;
+						dex = i;
+					}
+				}
+				total += min;
+				current[0] = goalsX.remove(dex);
+				current[1] = goalsY.remove(dex);
+				isBox = false;
+				isGoal = true;
+			}
+			else{
+				min = Integer.MAX_VALUE;
+				for(int i = 0; i < boxesX.size(); i ++){
+					dist = manhattanDist(current[0], current[1], boxesX.get(i), boxesY.get(i));
+					if(dist < min){
+						min = dist;
+						dex = i;
+					}
+				}
+				total += min;
+				current[0] = boxesX.remove(dex);
+				current[1] = boxesY.remove(dex);
+				isBox = true;
+				isGoal = false;
+			}
+
+		}
+		
+		return total;
+
+	}
+
+
+
+
+	public int manhattanDist(int x1, int y1, int x2, int y2){
+		int dx = abs(x2 - x1);
+		int dy = abs(y2 - y1);
 
 		return (dx + dy);
 
-		//return 0;
-
-
-		//write a recursive method 
-		//base case: compute straight line distance from start to box to goal
-		//write a recursion to go to next box back to goal 
 	}
 
 	public abstract int f(Node n);
