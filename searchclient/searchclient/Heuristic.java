@@ -2,7 +2,7 @@ package searchclient;
 
 import java.util.Comparator;
 import java.util.*;
-import java.lang.Math.*; 
+import java.lang.Math.*;
 import static java.lang.Math.abs;
 
 import searchclient.NotImplementedException;
@@ -10,18 +10,18 @@ import searchclient.NotImplementedException;
 
 public abstract class Heuristic implements Comparator<Node> {
 
-	ArrayList<Integer> goalsX;
-	ArrayList<Integer> goalsY; 
-	ArrayList<Integer> boxesX;
-	ArrayList<Integer> boxesY;
+	ArrayList<Integer> globalGoalsX;
+	ArrayList<Integer> globalGoalsY;
+	ArrayList<Integer> globalBoxesX;
+	ArrayList<Integer> globalBoxesY;
 
 
 	public Heuristic(Node initialState) {
 
-		goalsX = new ArrayList<Integer>();
-		goalsY = new ArrayList<Integer>();
-		boxesX = new ArrayList<Integer>();
-		boxesY = new ArrayList<Integer>();
+		globalGoalsX = new ArrayList<Integer>();
+		globalGoalsY = new ArrayList<Integer>();
+		globalBoxesX = new ArrayList<Integer>();
+		globalBoxesY = new ArrayList<Integer>();
 
 
 
@@ -30,12 +30,12 @@ public abstract class Heuristic implements Comparator<Node> {
 		for (int i = 0; i < initialState.boxes.length; i++){
 			for (int j = 0; j < initialState.boxes[0].length; j++){
 				if (initialState.goals[i][j] > 0){
-					goalsX.add(i);
-					goalsY.add(j);
+					globalGoalsX.add(i);
+					globalGoalsY.add(j);
 				}
 				if (initialState.boxes[i][j] > 0){
-					boxesX.add(i);
-					boxesY.add(j);
+					globalBoxesX.add(i);
+					globalBoxesY.add(j);
 				}
 			}
 		}
@@ -45,15 +45,22 @@ public abstract class Heuristic implements Comparator<Node> {
 
 
 	public int h(Node n) {
-		
+
 		int total = 0;
 		int dex = 0;
 		int dist;
 		int min;
 
+		ArrayList<Integer> goalsX = new ArrayList<Integer>(globalGoalsX);
+		ArrayList<Integer> goalsY = new ArrayList<Integer>(globalGoalsY);
+		ArrayList<Integer> boxesX = new ArrayList<Integer>(globalBoxesX);
+		ArrayList<Integer> boxesY = new ArrayList<Integer>(globalBoxesY);
+
+
+
 		int[] current = new int[2];
-		current[0] = boxesX.remove(0);
-		current[1] = boxesY.remove(0);
+		current[0] = n.agentRow;
+		current[1] = n.agentCol;
 
 		boolean isBox = true;
 		boolean isGoal = false;
@@ -91,7 +98,15 @@ public abstract class Heuristic implements Comparator<Node> {
 			}
 
 		}
-		
+
+		// System.err.print(n.agentCol);
+		// System.err.print(" ");
+		// System.err.println(n.agentRow);
+		// System.err.println(total);
+
+
+
+
 		return total;
 
 	}

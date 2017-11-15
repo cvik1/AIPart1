@@ -17,7 +17,7 @@ public class SearchClient {
 		// Read lines specifying color
 		String line = serverMessages.readLine();
 		int maxCol = line.length();
-		
+
 		if (line.matches("^[a-z]+:\\s*[0-9A-Z](\\s*,\\s*[0-9A-Z])*\\s*$")) {
 			System.err.println("Error, client does not support colors.");
 			System.exit(1);
