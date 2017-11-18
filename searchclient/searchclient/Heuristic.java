@@ -23,24 +23,22 @@ public abstract class Heuristic implements Comparator<Node> {
 		globalBoxesX = new ArrayList<Integer>();
 		globalBoxesY = new ArrayList<Integer>();
 
+		int dex = 0;
+		int dist;
+		int min;
 
 
 
 		// Here's a chance to pre-process the static parts of the level.
-		for (int i = 0; i < initialState.boxes.length; i++){
-			for (int j = 0; j < initialState.boxes[0].length; j++){
+		for (int i = 0; i < initialState.goals.length; i++){
+			for (int j = 0; j < initialState.goals[0].length; j++){
+				
 				if (initialState.goals[i][j] > 0){
 					globalGoalsX.add(i);
 					globalGoalsY.add(j);
 				}
-				if (initialState.boxes[i][j] > 0){
-					globalBoxesX.add(i);
-					globalBoxesY.add(j);
-				}
 			}
-		}
-
-
+		
 	}
 
 
@@ -48,67 +46,29 @@ public abstract class Heuristic implements Comparator<Node> {
 
 		int total = 0;
 		int dex = 0;
-		int dist;
-		int min;
+		int dist = 0;
+		int min = Integer.MAX_VALUE;
+		boolean atGoal = false;
 
-		ArrayList<Integer> goalsX = new ArrayList<Integer>(globalGoalsX);
-		ArrayList<Integer> goalsY = new ArrayList<Integer>(globalGoalsY);
-		ArrayList<Integer> boxesX = new ArrayList<Integer>(globalBoxesX);
-		ArrayList<Integer> boxesY = new ArrayList<Integer>(globalBoxesY);
+		// ArrayList<Integer> goalsX = new ArrayList<Integer>(globalGoalsX);
+		// ArrayList<Integer> goalsY = new ArrayList<Integer>(globalGoalsY);
+		ArrayList<Integer> boxesX = new ArrayList<Integer>();
+		ArrayList<Integer> boxesY = new ArrayList<Integer>();
 
-
-
-		int[] current = new int[2];
-		current[0] = n.agentRow;
-		current[1] = n.agentCol;
-
-		boolean isBox = true;
-		boolean isGoal = false;
-
-		while(goalsX.size() > 0){
-			if(isBox == true){
-				min = Integer.MAX_VALUE;
-				for(int i = 0; i < goalsX.size(); i ++){
-					dist = manhattanDist(current[0], current[1], goalsX.get(i), goalsY.get(i));
-					if(dist < min){
-						min = dist;
-						dex = i;
-					}
+		for (int x = 0; x < n.boxes.length; x++){
+			for(int y = 0; y < n.boxes[0].length; y++){
+				if (n.boxes[x][y] > 0){
+					boxesX.add(x);
+					boxesY.add(y);	
 				}
-				total += min;
-				current[0] = goalsX.remove(dex);
-				current[1] = goalsY.remove(dex);
-				isBox = false;
-				isGoal = true;
 			}
-			else{
-				min = Integer.MAX_VALUE;
-				for(int i = 0; i < boxesX.size(); i ++){
-					dist = manhattanDist(current[0], current[1], boxesX.get(i), boxesY.get(i));
-					if(dist < min){
-						min = dist;
-						dex = i;
-					}
-				}
-				total += min;
-				current[0] = boxesX.remove(dex);
-				current[1] = boxesY.remove(dex);
-				isBox = true;
-				isGoal = false;
-			}
-
+		}
+		
+		for(int i = 0; i < boxesX.size(); i++){
+			total += manhattanDist(boxesX.get(i), boxesY.get(i), globalGoalsX.get(i), globalGoalsY.get(i));
 		}
 
-		// System.err.print(n.agentCol);
-		// System.err.print(" ");
-		// System.err.println(n.agentRow);
-		// System.err.println(total);
-
-
-
-
 		return total;
-
 	}
 
 
