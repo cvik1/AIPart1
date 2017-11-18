@@ -38,6 +38,7 @@ public abstract class Heuristic implements Comparator<Node> {
 					globalGoalsY.add(j);
 				}
 			}
+		}
 		
 	}
 
@@ -64,7 +65,7 @@ public abstract class Heuristic implements Comparator<Node> {
 			}
 		}
 		
-		for(int i = 0; i < boxesX.size(); i++){
+		for(int i = 0; i < globalGoalsX.size(); i++){
 			total += manhattanDist(boxesX.get(i), boxesY.get(i), globalGoalsX.get(i), globalGoalsY.get(i));
 		}
 
